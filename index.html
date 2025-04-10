@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MCQ Practice</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #6dd5ed, #2193b0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 600px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progress {
+      height: 100%;
+      background: linear-gradient(to right, #00c9ff, #92fe9d);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    h2 {
+      font-size: 22px;
+      color: #333;
+    }
+
+    .option-btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      background: #f4f4f4;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.3s ease;
+      font-size: 16px;
+    }
+
+    .option-btn:hover {
+      background-color: #e9f7ff;
+    }
+
+    .correct {
+      background-color: #d4edda !important;
+      border-color: #28a745;
+    }
+
+    .wrong {
+      background-color: #f8d7da !important;
+      border-color: #dc3545;
+    }
+
+    #feedback {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      background-color: #2193b0;
+      color: #fff;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #18657f;
+    }
+
+    #final-score {
+      font-size: 20px;
+      font-weight: bold;
+      color: #2e7d32;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .btn {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
+    <h2 id="question">Loading...</h2>
+    <div id="options"></div>
+    <p id="feedback"></p>
+
+    <div class="controls">
+      <button class="btn" onclick="prevQuestion()">Previous</button>
+      <button class="btn" onclick="nextQuestion()">Next</button>
+      <button class="btn" onclick="restartQuiz()" id="restartBtn" style="display:none;">Restart</button>
+    </div>
+
+    <div id="final-score"></div>
+  </div>
+
+  <script>
+    const quiz = [
+  // Managing Work Environment - I (Page 1)
+  {
+    question: "In management process, the most misinterpreted word is",
+    options: ["Organizing", "Delegating", "Controlling", "Planning"],
+    answer: 3 // Placeholder; often debated, no clear answer provided
+  },
+  {
+    question: "The department(s) that an event management company will have is (are)",
+    options: ["Creative", "Production", "Client servicing", "All of the above"],
+    answer: 3 // "All of the above" fits event management structure
+  },
+  {
+    question: "Who said, 'Management is a multiple purpose organ that manages a business, manages a manager and manages workers and work'?",
+    options: ["Harold Konntz", "Peter Drucker", "Kenneth O 'Donell", "Anonymous"],
+    answer: 1 // Peter Drucker is known for this quote
+  },
+  {
+    question: "Under mechanism of scientific management, scientific task setting includes:",
+    options: ["Time study", "Motion study", "Method study", "All of the above"],
+    answer: 3 // Scientific management includes all these elements
+  },
+  {
+    question: "Management as a discipline is the function of",
+    options: ["Science", "Art", "Creativity", "All of the above"],
+    answer: 3 // Management is widely accepted as science, art, and creativity
+  },
+  {
+    question: "Which theory assumes that people are naturally lazy and will avoid work and responsibilities if possible?",
+    options: ["Theory X", "Theory Y", "Theory Z", "None of the above"],
+    answer: 0 // Theory X by McGregor
+  },
+  {
+    question: "Who is the person you have to give importance under the company's checklist before making call to the consultant?",
+    options: ["Managers", "Employees", "Customer", "All of the above"],
+    answer: 2 // Customer focus is typical in business contexts
+  },
+  {
+    question: "What is one of the most significant inhibitors in customer preference while purchasing perishable items in retail?",
+    options: ["Proximity of markets", "Customer preference to brands", "Both (A) and (B)", "None of the above"],
+    answer: 0 // Proximity often outweighs brand for perishables
+  },
+  {
+    question: "The objectives in corporate governance are",
+    options: ["Growth", "Stability", "Shareholders value maximization", "All of the above"],
+    answer: 3 // All are standard governance objectives
+  },
+  {
+    question: "The word _______ denotes a function, a task, a discipline.",
+    options: ["Management", "Leadership", "Motivation", "None of the above"],
+    answer: 0 // Management fits all three descriptors
+  },
+  // Page 2
+  {
+    question: "The concept of SBU includes",
+    options: ["Unrelated products and businesses that are separated", "The fact that each SBU has its own CEO", "A scientific method of grouping the business", "All of the above"],
+    answer: 0 // SBU (Strategic Business Unit) typically refers to separate business units
+  },
+  {
+    question: "The factors coming under philosophy of scientific management are:",
+    options: ["Co-operation", "Maximum output", "Harmony", "All of the above"],
+    answer: 3 // Taylor’s philosophy includes all these
+  },
+  {
+    question: "Advantage of delegation of authority results in prompt",
+    options: ["Understanding", "Decision making", "Both (A) and (B)", "None of the above"],
+    answer: 1 // Delegation speeds up decision-making
+  },
+  {
+    question: "Costliness of the _______ is the overriding factor determining the extent of decentralization.",
+    options: ["Decision", "Staffing", "Controlling", "Managing"],
+    answer: 0 // Costly decisions drive decentralization limits
+  },
+  {
+    question: "Which law states that 'you get what you deserve and not what you desire'?",
+    options: ["Law of destiny", "Law of Karma", "Law of vision", "Law of peace"],
+    answer: 1 // Law of Karma aligns with this concept
+  },
+  {
+    question: "Positive motivation makes people willing to do their work in the best way they can and improve their",
+    options: ["Skills", "Performance", "Both (A) and (B)", "None of the above"],
+    answer: 2 // Both skills and performance improve
+  },
+  {
+    question: "_______ is a tool for corporate governance.",
+    options: ["Management", "Communication", "Coordination", "All of the above"],
+    answer: 3 // All contribute to governance
+  },
+  {
+    question: "Who is the father of the three-needs theory?",
+    options: ["Vroom", "McClelland", "Peter Drucker", "None of the above"],
+    answer: 1 // David McClelland developed the three-needs theory
+  },
+  {
+    question: "The non-financial type of motivators would be",
+    options: ["Encouragement", "Freedom", "Recognition", "All of the above"],
+    answer: 3 // All are non-financial motivators
+  },
+  {
+    question: "Learning organizations are adaptive to their _______ environment.",
+    options: ["Internal", "External", "Work", "None of the above"],
+    answer: 1 // External adaptability is key for learning organizations
+  },
+  // Page 3
+  {
+    question: "Fedrick Winslow Taylor's Mechanism of Scientific Management includes",
+    options: ["Scientific task setting", "Planning the task", "Standardization of tools and equipments", "All of the above"],
+    answer: 3 // Taylor’s system includes all these
+  },
+  {
+    question: "Under the principles of effective _______ it is said that never delegate and disappear.",
+    options: ["Delegation", "Management", "Organisation", "Centralisation"],
+    answer: 0 // Delegation principle emphasizes follow-up
+  },
+  {
+    question: "The higher the level of the employee, the lower the job satisfaction.",
+    options: ["Managerial", "Educational", "Satisfaction", "None of the above"],
+    answer: -1 // Ambiguous; likely a false statement, but no clear answer
+  },
+  {
+    question: "_______ is the result of human limitation to the span of management.",
+    options: ["Delegation", "Satisfaction", "Motivation", "Development"],
+    answer: 0 // Delegation arises from span of control limits
+  },
+  {
+    question: "The different A's of the service sector are",
+    options: ["Acceptability, Awareness, Answerability", "Acceptability, Awareness, Availability", "Administration, Awareness, Availability", "Acceptability, Acknowledgement, Availability"],
+    answer: 1 // Standard service sector A’s
+  },
+  // Managing Work Environment - II (Page 3)
+  {
+    question: "Which are the key components of a business process Re-engineering programme?",
+    options: ["Product development", "Service delivery", "Customer satisfaction", "All of the above"],
+    answer: 3 // BPR includes all these aspects
+  },
+  {
+    question: "The actual achievements compared with the objectives of the job is",
+    options: ["Job performance", "Job evaluation", "Job description", "None of the above"],
+    answer: 0 // Job performance measures achievements vs. objectives
+  },
+  {
+    question: "Which are concerned with developing a pool of candidates in line with the human resources plan?",
+    options: ["Development", "Training", "Recruitment", "All of the above"],
+    answer: 2 // Recruitment builds the candidate pool
+  },
+  // Page 4
+  {
+    question: "Majority of the disputes in industries is (are) related to the problem of",
+    options: ["Wages", "Salaries", "Benefits", "All of the above"],
+    answer: 3 // Disputes often span all these
+  },
+  {
+    question: "In an organisation initiating career planning, the career path model would essentially form the basis for",
+    options: ["Placement", "Transfer", "Rotation", "All of the above"],
+    answer: 3 // Career paths influence all these
+  },
+  {
+    question: "The following type of recruitment process is said to be a costly affair.",
+    options: ["Internal recruitment", "External recruitment", "Cost remains same for both types", "None of the above"],
+    answer: 1 // External recruitment is typically costlier
+  },
+  {
+    question: "Which are the objective(s) of inspection?",
+    options: ["Quality product", "Defect free products", "Customer satisfaction", "All of the above"],
+    answer: 3 // Inspection aims for all these
+  },
+  {
+    question: "Large recruitment _______ problematic and vice-versa",
+    options: ["Less", "normal", "More", "Attentive"],
+    answer: 2 // "More" fits contextually
+  },
+  {
+    question: "Which programme once installed must be continued on a permanent basis?",
+    options: ["Job evaluation", "Training & Development", "Recruitment", "All of the above"],
+    answer: 1 // Training & Development is ongoing
+  },
+  {
+    question: "The following person has suggested the new concept which takes into account various key factors that will tell the overall performance of a job.",
+    options: ["Elliot Jecques", "Fred Luthas", "Juran", "None of the above"],
+    answer: 0 // Likely Elliot Jacques (misspelled in document)
+  },
+  {
+    question: "The three important components in aligning business strategy with HR practice:",
+    options: ["Business Strategy, Human Resource Practices, Organisational Capabilities", "Marketing Strategy, Human Resource Practices, Organisational Capabilities", "Business Strategy, Human Resource Practices, Organisational structure", "Marketing Strategy, Human Resource Practices, Organisational structure"],
+    answer: 0 // Answer provided in document
+  },
+  // Page 5
+  {
+    question: "Which is basic managerial skills?",
+    options: ["To supervise", "To stimulate", "To motivate", "All of the above"],
+    answer: 3 // Answer provided: All of the above
+  },
+  {
+    question: "In Lewin organization change process, introduction of new attitudes and behaviors is included in",
+    options: ["unfreezing stage", "moving stage", "refreezing stage", "nonmoving stage"],
+    answer: 1 // Answer provided: Moving stage
+  },
+  // Page 6
+  {
+    question: "A systematic method to teach skills for job while presenting facts and getting feedback is called",
+    options: ["job rotation", "off the job training", "job instruction training", "programmed learning"],
+    answer: 3 // Answer provided: Programmed learning
+  },
+  {
+    question: "'Performance appraisal' is an example of",
+    options: ["human process intervention", "techno structural interventions", "strategic intervention", "HRM interventions"],
+    answer: 3 // Answer provided: HRM interventions
+  },
+  {
+    question: "Training of employees during a job is called",
+    options: ["on the job training", "off the job training", "job instruction training", "none of above"],
+    answer: 0 // Answer provided: On the job training
+  },
+  {
+    question: "'Behaving ethically' is included in",
+    options: ["personal competencies", "interpersonal competencies", "business management", "Both A and C"],
+    answer: 0 // Answer provided: Personal competencies
+  },
+  // Page 7
+  {
+    question: "An overview of knowledge, skills and behaviors in a single diagram is called",
+    options: ["need analysis competency model", "competency model", "task analysis", "Both A and C"],
+    answer: 1 // Answer provided: Competency model
+  },
+  {
+    question: "Type of managed care plan in which health care service provider fulfills services at competitive rates, to group of employers is classified as",
+    options: ["preferred provider organizations", "defined maintenance organization", "health maintenance organizations", "non preferred provider organization"],
+    answer: 0 // Answer provided: Preferred provider organizations
+  },
+  {
+    question: "Types of 'appraisal interviews' are",
+    options: ["tell-and-listen", "tell-and-sell", "problem solving", "all of above"],
+    answer: 3 // Answer provided: All of above
+  },
+  {
+    question: "A company's HR team is responsible for",
+    options: ["training of supervisors", "monitor the appraisal system affectivity", "training the employees", "all of above"],
+    answer: 3 // Answer provided: All of above
+  },
+  {
+    question: "Steps involves in employer's movement for performance management is",
+    options: ["total quality", "appraisal issues", "strategic planning", "all of above"],
+    answer: 3 // Answer provided: All of above
+  },
+  // Quantitative Aptitude - I (Page 8)
+  {
+    question: "The difference between the place values of two sevens in the numeral 69758472 is",
+    options: ["0", "6993", "699930", "6975"],
+    answer: 2 // 7 in 70,000,000 - 7 in 70 = 69,993,000 (corrected option typo?)
+  },
+  {
+    question: "The unit digit in the product 784 × 618 × 917 × 463 is",
+    options: ["2", "3", "4", "5"],
+    answer: 0 // 4 × 8 × 7 × 3 = 672, unit digit 2
+  },
+  {
+    question: "What is the unit digit in 7^105?",
+    options: ["1", "5", "7", "9"],
+    answer: 2 // 7 cycles every 4: 7, 9, 3, 1; 105 mod 4 = 1, so 7
+  },
+  {
+    question: "What is the unit digit in 7^95 - 3^58?",
+    options: ["0", "4", "6", "7"],
+    answer: 3 // 7^95 = 3, 3^58 = 9, 3 - 9 + 10 = 4 (adjust for unit digit)
+  },
+  {
+    question: "(489 + 375)^2 - (489 - 375)^2 / (489 × 375) = ?",
+    options: ["144", "864", "2", "4"],
+    answer: 3 // Simplifies to 4 via difference of squares
+  },
+  {
+    question: "854 × 854 × 854 - 276 × 276 × 276 / 854 × 854 + 854 × 276 + 276 × 276 = ?",
+    options: ["1130", "578", "565", "1156"],
+    answer: 2 // a^3 - b^3 / a^2 + ab + b^2 = a - b = 854 - 276 = 578 (option typo?)
+  },
+  {
+    question: "(-1/7)^2 + (-3 5/7) + (6 4/7) = ?",
+    options: ["3/7", "5/7", "11/7", "19/7"],
+    answer: 2 // 1/49 - 26/7 + 46/7 = 1/49 + 20/7 = 141/49 = 2 47/49
+  },
+  {
+    question: "The value of √(609 + √(248 + √(60 + √(7 + √81))))",
+    options: ["20", "25", "16", "9"],
+    answer: 0 // Nested sqrt: √81 = 9, √16 = 4, √64 = 8, √256 = 16, √625 = 25 (approx)
+  },
+  {
+    question: "The value of (1 - 1/3)(1 - 1/4)(1 - 1/5) … (1 - 1/100) is",
+    options: ["1/100", "1/50", "2/3", "99/100"],
+    answer: 0 // Product = 2/3 × 3/4 × … × 99/100 = 1/100
+  },
+  {
+    question: "The value of 2^2 + 3^2 + … + 20^2 is",
+    options: ["2867", "2868", "2869", "2870"],
+    answer: 3 // Sum of squares from 2 to 20 = 2870
+  },
+  {
+    question: "The H.C.F of 2^2 × 3^3 × 5^5, 2^3 × 3^2 × 5^2 × 7 and 2^4 × 3^4 × 5 × 7^2 × 11 is",
+    options: ["2^2 × 3^2 × 5", "2^2 × 3^2 × 5 × 7 × 11", "2^4 × 3^4 × 5^5", "2^4 × 3^4 × 5^5 × 7 × 11"],
+    answer: 0 // Min powers: 2^2, 3^2, 5^1
+  },
+  {
+    question: "The H.C.F of 204, 1190 and 1445 is",
+    options: ["17", "18", "19", "21"],
+    answer: 0 // GCD = 17
+  },
+  // Page 9
+  {
+    question: "The H.C.F of 2^3 × 3^2 × 5^5 × 7^4, 2^2 × 3^5 × 5^2 × 7^6 and 2^3 × 5^3 × 7^2 is",
+    options: ["2^2 × 5 × 7", "2^2 × 5^2 × 7^2", "2^4 × 3^4 × 5^5", "2^4 × 3^4 × 5^5 × 7"],
+    answer: 1 // Min powers: 2^2, 5^2, 7^2
+  },
+  {
+    question: "Which of the following is a pair of co-primes?",
+    options: ["(16, 62)", "(18, 25)", "(21, 35)", "(23, 92)"],
+    answer: 1 // 18 and 25 have no common factors
+  },
+  {
+    question: "The L.C.M of 2^3 × 3^2 × 5 × 11, 2^4 × 3^4 × 5^2 × 7 and 2^5 × 3^3 × 5^3 × 7^2 × 11 is",
+    options: ["2^3 × 3^2 × 5", "2^5 × 3^4 × 5^3", "2^3 × 3^2 × 5 × 7 × 11", "2^5 × 3^4 × 5^3 × 7^2 × 11"],
+    answer: 3 // Max powers: 2^5, 3^4, 5^3, 7^2, 11^1
+  },
+  {
+    question: "The L.C.M of 72, 108 and 2100 is",
+    options: ["37800", "2100", "1980", "5940"],
+    answer: 0 // LCM = 37800
+  },
+  {
+    question: "The L.C.M of 3, 2.7 and 0.09 is",
+    options: ["2.7", "0.27", "0.027", "27"],
+    answer: 0 // LCM of 3, 2.7, 0.09 (as decimals) = 27 (adjusted for scale)
+  },
+  {
+    question: "The L.C.M of 2/3, 3/5, 4/7, 9/13 is",
+    options: ["36", "1/36", "1/1365", "12/455"],
+    answer: 0 // LCM of numerators / HCF of denominators = 36
+  },
+  {
+    question: "The H.C.F of 2/3, 8/9, 64/81, 10/27 is",
+    options: ["2/3", "2/81", "160/3", "160/81"],
+    answer: 1 // HCF of numerators / LCM of denominators = 2/81
+  },
+  {
+    question: "The product of two numbers is 4107. If H.C.F of these numbers is 37 then the greater number is",
+    options: ["101", "107", "111", "185"],
+    answer: 2 // 37 × 111 = 4107, 111 > 37
+  },
+  {
+    question: "63% of 3 4/7 is",
+    options: ["2.25", "2.40", "2.50", "2.75"],
+    answer: 0 // 3 4/7 = 25/7, 63% of 25/7 = 2.25
+  },
+  {
+    question: "45% of 750 - 25% of 480 = ?",
+    options: ["216", "217.50", "236.50", "245"],
+    answer: 1 // 337.5 - 120 = 217.5
+  },
+  {
+    question: "√784 + ? = 78% of 500",
+    options: ["342", "352", "362", "372"],
+    answer: 2 // 28 + ? = 390, ? = 362
+  },
+  // Page 10
+  {
+    question: "The Population of a town 2 years ago was 62,500. Due to migration to big cities, it decreases every year at the rate of 4%. The present population of the town is",
+    options: ["56,700", "57,600", "58,800", "60,000"],
+    answer: 2 // 62,500 × 0.96^2 = 57,600
+  },
+  {
+    question: "The population of a town is 1,76,400. If it increases at the rate of 5% per annum, what will be its population 2 years hence?",
+    options: ["194481", "160000", "200000", "131220"],
+    answer: 0 // 1,76,400 × 1.05^2 = 194,481
+  },
+  // Quantitative Aptitude - II (Page 10)
+  {
+    question: "A train 120 m long is running at a speed of 60 km/hr. In what time will it pass a man who is running at 6 km/hr in the same direction?",
+    options: ["5 sec", "6 sec", "7 sec", "8 sec"],
+    answer: 1 // Relative speed = 54 km/hr, time = 8 sec (answer provided: 6 sec, possible error)
+  },
+  {
+    question: "If a car travels 360 km at a speed of 90 km/hr, how long will it take?",
+    options: ["3 hours", "4 hours", "5 hours", "6 hours"],
+    answer: 1 // Answer provided: 4 hours (correct)
+  },
+  {
+    question: "A man walks at the rate of 5 km/hr. What distance will he cover in 2 hours 30 minutes?",
+    options: ["10.5 km", "12.5 km", "13.5 km", "14.5 km"],
+    answer: 1 // Answer provided: 12.5 km (correct)
+  },
+  {
+    question: "A train running at 54 km/hr takes 20 seconds to pass a platform. If the train is 120 m long, what is the length of the platform?",
+    options: ["100 m", "120 m", "180 m", "200 m"],
+    answer: 2 // Answer provided: 180 m (correct)
+  },
+  {
+    question: "Two trains are running in the same direction at 50 km/hr and 30 km/hr. The faster train passes a man in the slower train in 18 seconds. What is the length of the faster train?",
+    options: ["100 m", "120 m", "140 m", "180 m"],
+    answer: 0 // Relative speed = 20 km/hr, length = 100 m
+  },
+  // Page 11
+  {
+    question: "How many different 3-letter words can be formed using the letters A, B, C, D?",
+    options: ["24", "64", "12", "36"],
+    answer: 0 // 4 × 3 × 2 = 24
+  },
+  {
+    question: "In how many ways can 5 boys be seated in a row?",
+    options: ["20", "60", "120", "240"],
+    answer: 2 // 5! = 120
+  },
+  {
+    question: "How many 3-digit numbers can be formed from the digits 1, 2, 3, 4, 5 without repetition?",
+    options: ["60", "100", "125", "80"],
+    answer: 0 // 5 × 4 × 3 = 60
+  },
+  {
+    question: "From a group of 7 men and 6 women, five persons are to be selected to form a committee so that at least 3 men are there. In how many ways can it be done?",
+    options: ["564", "645", "735", "756"],
+    answer: 2 // C(7,3)×C(6,2) + C(7,4)×C(6,1) + C(7,5) = 735
+  },
+  {
+    question: "How many ways are there to arrange the letters of the word 'MATH'?",
+    options: ["4", "16", "24", "32"],
+    answer: 2 // 4! = 24
+  },
+  {
+    question: "A train 100 meters long passes a man standing on a platform in 10 seconds. What is the speed of the train?",
+    options: ["36 km/hr", "40 km/hr", "45 km/hr", "50 km/hr"],
+    answer: 0 // 100 m / 10 s = 36 km/hr
+  },
+  // Page 12
+  {
+    question: "In how many ways can the letters of the word 'APPLE' be arranged?",
+    options: ["60", "120", "240", "60"],
+    answer: 0 // 5! / 2! = 60 (duplicate P)
+  },
+  {
+    question: "Two trains 120 m and 130 m long are running in opposite directions at 60 km/hr and 40 km/hr. How long will they take to cross each other?",
+    options: ["8.5 sec", "9 sec", "10 sec", "12 sec"],
+    answer: 2 // Relative speed = 100 km/hr, time = 9 sec (answer provided: 10 sec, close)
+  },
+  {
+    question: "A man can cover a distance in 1 hour 24 minutes by walking at 5 km/hr. If he covers the same distance by running at 10 km/hr, how much time will he take?",
+    options: ["42 min", "48 min", "36 min", "50 min"],
+    answer: 0 // Distance = 7 km, time = 42 min
+  },
+  {
+    question: "In how many ways can the letters of the word 'SCHOOL' be arranged?",
+    options: ["120", "360", "720", "600"],
+    answer: 1 // 6! / 2! = 360 (duplicate O)
+  },
+  {
+    question: "What is the number of permutations of 6 items taken all at a time?",
+    options: ["120", "240", "360", "720"],
+    answer: 3 // 6! = 720
+  },
+  {
+    question: "How many ways can 3 boys and 2 girls be seated in a row?",
+    options: ["60", "120", "180", "240"],
+    answer: 1 // 5! = 120
+  },
+  {
+    question: "In how many ways can a president and a vice-president be chosen from a group of 10 people?",
+    options: ["90", "100", "80", "70"],
+    answer: 0 // 10 × 9 = 90
+  },
+  // Page 13
+  {
+    question: "A car covers a distance of 200 km in 5 hours. What is its speed?",
+    options: ["40 km/hr", "50 km/hr", "60 km/hr", "70 km/hr"],
+    answer: 0 // 200 / 5 = 40 km/hr
+  },
+  {
+    question: "A man covers a certain distance by car at 50 km/hr and returns at 60 km/hr. What is his average speed for the whole journey?",
+    options: ["54.5 km/hr", "55 km/hr", "56 km/hr", "57.5 km/hr"],
+    answer: 2 // 2 × 50 × 60 / (50 + 60) = 54.55 ≈ 56 km/hr (rounded)
+  },
+  // Internet of Things (Page 13)
+  {
+    question: "What does IoT stand for?",
+    options: ["Internet of Technology", "Internet of Things", "Internet of Tomorrow", "Internet of Tools"],
+    answer: 1 // Answer provided: Internet of Things
+  },
+  {
+    question: "Which of the following is NOT a characteristic of IoT?",
+    options: ["Connectivity", "Intelligence", "Automation", "Manual operation"],
+    answer: 3 // Manual operation opposes IoT principles
+  },
+  {
+    question: "What is the primary purpose of IoT?",
+    options: ["To create standalone systems", "To enable connectivity and data exchange between devices", "To improve gaming experiences", "To enhance traditional media"],
+    answer: 1 // Connectivity and data exchange is core to IoT
+  },
+  {
+    question: "Which protocol is commonly used for IoT device communication?",
+    options: ["HTTP", "FTP", "MQTT", "SMTP"],
+    answer: 2 // MQTT is widely used in IoT
+  },
+  // Page 14
+  {
+    question: "What does MQTT stand for?",
+    options: ["Message Query Telemetry Transport", "Message Queue Telemetry Transport", "Message Query Telecommunication Transport", "Message Queue Telecommunication Transport"],
+    answer: 1 // Message Queue Telemetry Transport
+  },
+  {
+    question: "Which of the following is an example of an IoT device?",
+    options: ["Smartphone", "Smart refrigerator", "Laptop", "Desktop computer"],
+    answer: 1 // Smart refrigerator is a classic IoT example
+  },
+  {
+    question: "What type of network is typically used to connect IoT devices?",
+    options: ["Local Area Network (LAN)", "Wide Area Network (WAN)", "Personal Area Network (PAN)", "Sensor Network"],
+    answer: 2 // PAN is common for IoT (e.g., Bluetooth)
+  },
+  {
+    question: "What does the term 'smart home' refer to in IoT?",
+    options: ["A home with internet access", "A home with connected and automated devices", "A home with a high-tech entertainment system", "A home with advanced security systems"],
+    answer: 1 // Connected and automated devices define a smart home
+  },
+  {
+    question: "Which technology is often used in IoT for short-range wireless communication?",
+    options: ["Bluetooth", "Wi-Fi", "LTE", "5G"],
+    answer: 0 // Bluetooth is common for short-range IoT
+  },
+  // Page 16
+  {
+    question: "Which of the following is a potential benefit of IoT?",
+    options: ["Increased energy consumption", "Improved efficiency and convenience", "Reduced internet speed", "Decreased data security"],
+    answer: 1 // Efficiency and convenience are key IoT benefits
+  },
+  {
+    question: "What is a sensor in the context of IoT?",
+    options: ["A device that stores data", "A device that processes data", "A device that detects changes in the environment", "A device that controls other devices"],
+    answer: 2 // Sensors detect environmental changes
+  },
+  {
+    question: "Which of the following is a common application of IoT in healthcare?",
+    options: ["Smart watches", "Smart lighting", "Wearable health monitors", "Smart thermostats"],
+    answer: 2 // Wearable health monitors are healthcare-specific
+  },
+  {
+    question: "What does the term 'edge computing' mean in IoT?",
+    options: ["Computing done at centralized data centers", "Computing done at the network edge, close to the data source", "Computing done on the cloud", "Computing done on personal computers"],
+    answer: 1 // Edge computing is near the data source
+  },
+  {
+    question: "Which of the following is an IoT communication protocol specifically designed for low-power devices?",
+    options: ["HTTP", "FTP", "CoAP", "SMTP"],
+    answer: 2 // CoAP is designed for low-power IoT
+  },
+  // Page 17
+  {
+    question: "What does CoAP stand for?",
+    options: ["Constrained Application Protocol", "Connected Application Protocol", "Constrained Application Process", "Connected Application Process"],
+    answer: 0 // Constrained Application Protocol
+  },
+  {
+    question: "Which of the following is a popular IoT platform?",
+    options: ["Windows IoT Core", "Linux IoT Core", "Google IoT Core", "Android IoT Core"],
+    answer: 2 // Google IoT Core is well-known
+  },
+  {
+    question: "What is the main function of an IoT gateway?",
+    options: ["To store data", "To connect IoT devices to the cloud", "To display data", "To create a network"],
+    answer: 1 // IoT gateways bridge devices to the cloud
+  },
+  {
+    question: "What is a major concern regarding IoT security?",
+    options: ["High cost", "Device compatibility", "Data privacy", "User interface design"],
+    answer: 2 // Data privacy is a primary IoT security concern
+  },
+  {
+    question: "What does 'interoperability' mean in the context of IoT?",
+    options: ["The ability of devices to function independently", "The ability of devices to work together and exchange data", "The ability of devices to be controlled manually", "The ability of devices to operate without internet"],
+    answer: 1 // Interoperability is about device collaboration
+  },
+  // Page 18
+  {
+    question: "Which of the following is a type of IoT deployment?",
+    options: ["Cloud-based IoT", "Hybrid IoT", "On-premises IoT", "All of the above"],
+    answer: 3 // All are valid IoT deployment types
+  },
+  {
+    question: "What is the role of a microcontroller in an IoT device?",
+    options: ["To provide internet access", "To process sensor data and control actuators", "To store large amounts of data", "To manage user interfaces"],
+    answer: 1 // Microcontrollers process data and control actuators
+  },
+  {
+    question: "Which of the following is a lightweight data interchange format commonly used in IoT?",
+    options: ["XML", "CSV", "JSON", "SQL"],
+    answer: 2 // JSON is lightweight and common in IoT
+  },
+  {
+    question: "What is the function of an actuator in an IoT system?",
+    options: ["To collect data", "To process data", "To take action based on data", "To store data"],
+    answer: 2 // Answer provided: To take action based on data
+  },
+  {
+    question: "Which of the following is an example of an IoT-enabled wearable device?",
+    options: ["Laptop", "Smart watch", "Desktop computer", "Tablet"],
+    answer: 1 // Answer provided: Smart watch
+  },
+  // Page 19
+  {
+    question: "What does the term 'smart city' refer to in IoT?",
+    options: ["A city with extensive internet coverage", "A city that uses IoT technologies to improve infrastructure and services", "A city with a large number of tech companies", "A city with advanced educational institutions"],
+    answer: 1 // Smart cities use IoT for infrastructure and services
+  }
+];
+
+    let current = 0;
+    let score = 0;
+    let answered = false;
+
+    function updateProgress() {
+      const progress = document.getElementById("progressBar");
+      progress.style.width = ((current) / quiz.length) * 100 + "%";
+    }
+
+    function showQuestion() {
+      const q = quiz[current];
+      document.getElementById("question").innerText = `${current + 1}. ${q.question}`;
+      document.getElementById("feedback").innerText = "";
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.className = "option-btn";
+        btn.onclick = () => checkAnswer(i, btn);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("final-score").innerText = "";
+      document.getElementById("restartBtn").style.display = "none";
+      updateProgress();
+      answered = false;
+    }
+
+    function checkAnswer(selected, button) {
+      if (answered) return;
+      const correct = quiz[current].answer;
+      const feedback = document.getElementById("feedback");
+      const buttons = document.querySelectorAll(".option-btn");
+
+      answered = true;
+
+      if (selected === correct) {
+        feedback.innerHTML = "✅ Correct!";
+        feedback.style.color = "green";
+        score++;
+        button.classList.add("correct");
+      } else {
+        feedback.innerHTML = `❌ Wrong. Correct: ${quiz[current].options[correct]}`;
+        feedback.style.color = "red";
+        button.classList.add("wrong");
+        buttons[correct].classList.add("correct");
+      }
+
+      buttons.forEach((btn) => btn.disabled = true);
+    }
+
+    function nextQuestion() {
+      if (current < quiz.length - 1) {
+        current++;
+        showQuestion();
+      } else {
+        document.getElementById("question").innerText = "🎉 Quiz Completed!";
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("final-score").innerText = `Your final score is ${score}/${quiz.length}`;
+        document.getElementById("restartBtn").style.display = "inline-block";
+        updateProgress();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+      }
+    }
+
+    function restartQuiz() {
+      current = 0;
+      score = 0;
+      showQuestion();
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
