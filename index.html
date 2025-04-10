@@ -5,128 +5,192 @@
   <title>MCQ Practice</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #6dd5ed, #2193b0);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
+  margin: 0;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(to right, #6dd5ed, #2193b0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  flex-wrap: wrap;
+}
 
-    .container {
-      background: #fff;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      max-width: 600px;
-      animation: fadeIn 0.5s ease;
-    }
+.container {
+  background: #defdf8;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 600px;
+  animation: fadeIn 0.4s ease-in-out;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    .progress-bar {
-      height: 8px;
-      background: #e0e0e0;
-      border-radius: 20px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
+.progress-bar {
+  height: 15px;
+  background: #e0e0e0;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
 
-    .progress {
-      height: 100%;
-      background: linear-gradient(to right, #00c9ff, #92fe9d);
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+.progress {
+  height: 100%;
+  background: linear-gradient(to right, #00c9ff, #92fe9d);
+  width: 0%;
+  transition: width 0.5s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  color: #111;
+  font-weight: bold;
+  font-size: 12px;
+  border-radius: 20px;
+}
 
-    h2 {
-      font-size: 22px;
-      color: #333;
-    }
+@media (max-width: 600px) {
+  .progress {
+    font-size: 11px;
+    padding-right: 6px;
+  }
+}
 
-    .option-btn {
-      width: 100%;
-      padding: 12px;
-      margin-top: 12px;
-      background: #f4f4f4;
-      border: 2px solid transparent;
-      border-radius: 8px;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.3s ease;
-      font-size: 16px;
-    }
 
-    .option-btn:hover {
-      background-color: #e9f7ff;
-    }
+h2 {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 15px;
+}
 
-    .correct {
-      background-color: #d4edda !important;
-      border-color: #28a745;
-    }
+.option-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  background: #f9f9f9;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+}
 
-    .wrong {
-      background-color: #f8d7da !important;
-      border-color: #dc3545;
-    }
+.option-btn:hover {
+  background-color: #e6f6ff;
+  transform: scale(1.02);
+}
 
-    #feedback {
-      font-weight: bold;
-      margin-top: 15px;
-      font-size: 16px;
-    }
+.correct {
+  background-color: #d4edda !important;
+  border-color: #28a745;
+}
 
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 25px;
-    }
+.wrong {
+  background-color: #f8d7da !important;
+  border-color: #dc3545;
+}
 
-    .btn {
-      padding: 10px 20px;
-      border: none;
-      background-color: #2193b0;
-      color: #fff;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+#feedback {
+  font-weight: 600;
+  margin-top: 15px;
+  font-size: 16px;
+  text-align: center;
+}
 
-    .btn:hover {
-      background-color: #18657f;
-    }
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
-    #final-score {
-      font-size: 20px;
-      font-weight: bold;
-      color: #2e7d32;
-      margin-top: 20px;
-      text-align: center;
-    }
+.btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background-color: #2193b0;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-    @media (max-width: 600px) {
-      .btn {
-        font-size: 14px;
-        padding: 10px;
-      }
+.btn:hover {
+  background-color: #18657f;
+  transform: translateY(-2px);
+}
 
-      h2 {
-        font-size: 18px;
-      }
-    }
+#final-score {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2e7d32;
+  margin-top: 25px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in;
+}
+header{
+  padding: 5px;
+}
+footer, header{
+  background-color: #fff;
+  width: 100%;
+  text-align: center;
+  border-radius: 20px 3px 20px 3px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  h2 {
+    font-size: 19px;
+  }
+
+  .option-btn {
+    font-size: 15px;
+    padding: 13px;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  #final-score {
+    font-size: 20px;
+  }
+}
+
   </style>
 </head>
 <body>
+  <header>
+    MCQ Quiz - 2025
+  </header>
   <div class="container">
-    <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
+    <div class="progress-bar">
+      <div class="progress" id="progressBar">
+        <span id="progressText">0%</span>
+      </div>
+    </div>
     <h2 id="question">Loading...</h2>
     <div id="options"></div>
     <p id="feedback"></p>
@@ -140,13 +204,17 @@
     <div id="final-score"></div>
   </div>
 
+  <footer>
+    <p>Created By Muthamizh & Naveen 🧑‍💻</p>
+  </footer>
+
   <script>
     const quiz = [
   // Managing Work Environment - I (Page 1)
   {
     question: "In management process, the most misinterpreted word is",
     options: ["Organizing", "Delegating", "Controlling", "Planning"],
-    answer: 3 // Placeholder; often debated, no clear answer provided
+    answer: 0 // Placeholder; often debated, no clear answer provided
   },
   {
     question: "The department(s) that an event management company will have is (are)",
@@ -166,7 +234,7 @@
   {
     question: "Management as a discipline is the function of",
     options: ["Science", "Art", "Creativity", "All of the above"],
-    answer: 3 // Management is widely accepted as science, art, and creativity
+    answer: 2 // Management is widely accepted as science, art, and creativity
   },
   {
     question: "Which theory assumes that people are naturally lazy and will avoid work and responsibilities if possible?",
@@ -176,7 +244,7 @@
   {
     question: "Who is the person you have to give importance under the company's checklist before making call to the consultant?",
     options: ["Managers", "Employees", "Customer", "All of the above"],
-    answer: 2 // Customer focus is typical in business contexts
+    answer: 1 // Customer focus is typical in business contexts
   },
   {
     question: "What is one of the most significant inhibitors in customer preference while purchasing perishable items in retail?",
@@ -197,7 +265,7 @@
   {
     question: "The concept of SBU includes",
     options: ["Unrelated products and businesses that are separated", "The fact that each SBU has its own CEO", "A scientific method of grouping the business", "All of the above"],
-    answer: 0 // SBU (Strategic Business Unit) typically refers to separate business units
+    answer: 3 // SBU (Strategic Business Unit) typically refers to separate business units
   },
   {
     question: "The factors coming under philosophy of scientific management are:",
@@ -217,17 +285,17 @@
   {
     question: "Which law states that 'you get what you deserve and not what you desire'?",
     options: ["Law of destiny", "Law of Karma", "Law of vision", "Law of peace"],
-    answer: 1 // Law of Karma aligns with this concept
+    answer: 0 // Law of Karma aligns with this concept
   },
   {
     question: "Positive motivation makes people willing to do their work in the best way they can and improve their",
     options: ["Skills", "Performance", "Both (A) and (B)", "None of the above"],
-    answer: 2 // Both skills and performance improve
+    answer: 1 // Both skills and performance improve
   },
   {
     question: "_______ is a tool for corporate governance.",
     options: ["Management", "Communication", "Coordination", "All of the above"],
-    answer: 3 // All contribute to governance
+    answer: 1 // All contribute to governance
   },
   {
     question: "Who is the father of the three-needs theory?",
@@ -258,7 +326,7 @@
   {
     question: "The higher the level of the employee, the lower the job satisfaction.",
     options: ["Managerial", "Educational", "Satisfaction", "None of the above"],
-    answer: -1 // Ambiguous; likely a false statement, but no clear answer
+    answer: 1 // Ambiguous; likely a false statement, but no clear answer
   },
   {
     question: "_______ is the result of human limitation to the span of management.",
@@ -310,12 +378,12 @@
   {
     question: "Large recruitment _______ problematic and vice-versa",
     options: ["Less", "normal", "More", "Attentive"],
-    answer: 2 // "More" fits contextually
+    answer: 0 // "More" fits contextually
   },
   {
     question: "Which programme once installed must be continued on a permanent basis?",
     options: ["Job evaluation", "Training & Development", "Recruitment", "All of the above"],
-    answer: 1 // Training & Development is ongoing
+    answer: 0 // Training & Development is ongoing
   },
   {
     question: "The following person has suggested the new concept which takes into account various key factors that will tell the overall performance of a job.",
@@ -404,7 +472,7 @@
   {
     question: "What is the unit digit in 7^95 - 3^58?",
     options: ["0", "4", "6", "7"],
-    answer: 3 // 7^95 = 3, 3^58 = 9, 3 - 9 + 10 = 4 (adjust for unit digit)
+    answer: 1 // 7^95 = 3, 3^58 = 9, 3 - 9 + 10 = 4 (adjust for unit digit)
   },
   {
     question: "(489 + 375)^2 - (489 - 375)^2 / (489 × 375) = ?",
@@ -414,7 +482,7 @@
   {
     question: "854 × 854 × 854 - 276 × 276 × 276 / 854 × 854 + 854 × 276 + 276 × 276 = ?",
     options: ["1130", "578", "565", "1156"],
-    answer: 2 // a^3 - b^3 / a^2 + ab + b^2 = a - b = 854 - 276 = 578 (option typo?)
+    answer: 1 // a^3 - b^3 / a^2 + ab + b^2 = a - b = 854 - 276 = 578 (option typo?)
   },
   {
     question: "(-1/7)^2 + (-3 5/7) + (6 4/7) = ?",
@@ -424,12 +492,12 @@
   {
     question: "The value of √(609 + √(248 + √(60 + √(7 + √81))))",
     options: ["20", "25", "16", "9"],
-    answer: 0 // Nested sqrt: √81 = 9, √16 = 4, √64 = 8, √256 = 16, √625 = 25 (approx)
+    answer: 1 // Nested sqrt: √81 = 9, √16 = 4, √64 = 8, √256 = 16, √625 = 25 (approx)
   },
   {
     question: "The value of (1 - 1/3)(1 - 1/4)(1 - 1/5) … (1 - 1/100) is",
     options: ["1/100", "1/50", "2/3", "99/100"],
-    answer: 0 // Product = 2/3 × 3/4 × … × 99/100 = 1/100
+    answer: 1 // Product = 2/3 × 3/4 × … × 99/100 = 1/100
   },
   {
     question: "The value of 2^2 + 3^2 + … + 20^2 is",
@@ -470,7 +538,7 @@
   {
     question: "The L.C.M of 3, 2.7 and 0.09 is",
     options: ["2.7", "0.27", "0.027", "27"],
-    answer: 0 // LCM of 3, 2.7, 0.09 (as decimals) = 27 (adjusted for scale)
+    answer: 3 // LCM of 3, 2.7, 0.09 (as decimals) = 27 (adjusted for scale)
   },
   {
     question: "The L.C.M of 2/3, 3/5, 4/7, 9/13 is",
@@ -506,7 +574,7 @@
   {
     question: "The Population of a town 2 years ago was 62,500. Due to migration to big cities, it decreases every year at the rate of 4%. The present population of the town is",
     options: ["56,700", "57,600", "58,800", "60,000"],
-    answer: 2 // 62,500 × 0.96^2 = 57,600
+    answer: 1 // 62,500 × 0.96^2 = 57,600
   },
   {
     question: "The population of a town is 1,76,400. If it increases at the rate of 5% per annum, what will be its population 2 years hence?",
@@ -522,7 +590,7 @@
   {
     question: "If a car travels 360 km at a speed of 90 km/hr, how long will it take?",
     options: ["3 hours", "4 hours", "5 hours", "6 hours"],
-    answer: 1 // Answer provided: 4 hours (correct)
+    answer: 0 // Answer provided: 4 hours (correct)
   },
   {
     question: "A man walks at the rate of 5 km/hr. What distance will he cover in 2 hours 30 minutes?",
@@ -537,7 +605,7 @@
   {
     question: "Two trains are running in the same direction at 50 km/hr and 30 km/hr. The faster train passes a man in the slower train in 18 seconds. What is the length of the faster train?",
     options: ["100 m", "120 m", "140 m", "180 m"],
-    answer: 0 // Relative speed = 20 km/hr, length = 100 m
+    answer: 1 // Relative speed = 20 km/hr, length = 100 m
   },
   // Page 11
   {
@@ -558,7 +626,7 @@
   {
     question: "From a group of 7 men and 6 women, five persons are to be selected to form a committee so that at least 3 men are there. In how many ways can it be done?",
     options: ["564", "645", "735", "756"],
-    answer: 2 // C(7,3)×C(6,2) + C(7,4)×C(6,1) + C(7,5) = 735
+    answer: 3 // C(7,3)×C(6,2) + C(7,4)×C(6,1) + C(7,5) = 735
   },
   {
     question: "How many ways are there to arrange the letters of the word 'MATH'?",
@@ -568,7 +636,7 @@
   {
     question: "A train 100 meters long passes a man standing on a platform in 10 seconds. What is the speed of the train?",
     options: ["36 km/hr", "40 km/hr", "45 km/hr", "50 km/hr"],
-    answer: 0 // 100 m / 10 s = 36 km/hr
+    answer: 1 // 100 m / 10 s = 36 km/hr
   },
   // Page 12
   {
@@ -584,12 +652,12 @@
   {
     question: "A man can cover a distance in 1 hour 24 minutes by walking at 5 km/hr. If he covers the same distance by running at 10 km/hr, how much time will he take?",
     options: ["42 min", "48 min", "36 min", "50 min"],
-    answer: 0 // Distance = 7 km, time = 42 min
+    answer: 2 // Distance = 7 km, time = 42 min
   },
   {
     question: "In how many ways can the letters of the word 'SCHOOL' be arranged?",
     options: ["120", "360", "720", "600"],
-    answer: 1 // 6! / 2! = 360 (duplicate O)
+    answer: 2 // 6! / 2! = 360 (duplicate O)
   },
   {
     question: "What is the number of permutations of 6 items taken all at a time?",
@@ -610,12 +678,12 @@
   {
     question: "A car covers a distance of 200 km in 5 hours. What is its speed?",
     options: ["40 km/hr", "50 km/hr", "60 km/hr", "70 km/hr"],
-    answer: 0 // 200 / 5 = 40 km/hr
+    answer: 1 // 200 / 5 = 40 km/hr
   },
   {
     question: "A man covers a certain distance by car at 50 km/hr and returns at 60 km/hr. What is his average speed for the whole journey?",
     options: ["54.5 km/hr", "55 km/hr", "56 km/hr", "57.5 km/hr"],
-    answer: 2 // 2 × 50 × 60 / (50 + 60) = 54.55 ≈ 56 km/hr (rounded)
+    answer: 1 // 2 × 50 × 60 / (50 + 60) = 54.55 ≈ 56 km/hr (rounded)
   },
   // Internet of Things (Page 13)
   {
@@ -652,7 +720,7 @@
   {
     question: "What type of network is typically used to connect IoT devices?",
     options: ["Local Area Network (LAN)", "Wide Area Network (WAN)", "Personal Area Network (PAN)", "Sensor Network"],
-    answer: 2 // PAN is common for IoT (e.g., Bluetooth)
+    answer: 3 // PAN is common for IoT (e.g., Bluetooth)
   },
   {
     question: "What does the term 'smart home' refer to in IoT?",
@@ -673,7 +741,7 @@
   {
     question: "What is a sensor in the context of IoT?",
     options: ["A device that stores data", "A device that processes data", "A device that detects changes in the environment", "A device that controls other devices"],
-    answer: 2 // Sensors detect environmental changes
+    answer: 0 // Sensors detect environmental changes
   },
   {
     question: "Which of the following is a common application of IoT in healthcare?",
@@ -801,7 +869,32 @@
       }
 
       buttons.forEach((btn) => btn.disabled = true);
+
+      // Auto move to next after 2.5s
+      setTimeout(() => {
+        if (current < quiz.length - 1) {
+          current++;
+          showQuestion();
+        } else {
+          document.getElementById("question").innerText = "🎉 Quiz Completed!";
+          document.getElementById("options").innerHTML = "";
+          document.getElementById("feedback").innerText = "";
+          document.getElementById("final-score").innerText = `Your final score is ${score}/${quiz.length}`;
+          document.getElementById("restartBtn").style.display = "inline-block";
+          updateProgress();
+        }
+      }, 1500);
     }
+
+    function updateProgress() {
+      const progress = document.getElementById("progressBar");
+      const progressText = document.getElementById("progressText");
+      const percent = Math.round((current / quiz.length) * 100);
+      progress.style.width = percent + "%";
+      progressText.innerText = percent + "%";
+    }
+
+
 
     function nextQuestion() {
       if (current < quiz.length - 1) {
