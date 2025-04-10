@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MCQ Practice</title>
   <style>
     body {
@@ -11,7 +12,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 90vh;
   padding: 20px;
   flex-wrap: wrap;
 }
@@ -148,34 +149,59 @@ footer, header{
   text-align: center;
   border-radius: 20px 3px 20px 3px;
 }
-
 @media (max-width: 600px) {
+  body {
+    flex-direction: column;
+    padding: 10px;
+  }
+
   .container {
-    padding: 20px;
-    border-radius: 16px;
+    width: 100%;
+    max-width: 90%;
+    padding: 20px 16px;
+    border-radius: 12px;
+    box-shadow: none;
   }
 
   h2 {
-    font-size: 19px;
+    font-size: 22px;
+    text-align: center;
   }
 
   .option-btn {
-    font-size: 15px;
-    padding: 13px;
+    font-size: 18px;
+    padding: 16px 14px;
+    margin-top: 12px;
+  }
+
+  .progress {
+    font-size: 14px;
+    padding-right: 10px;
   }
 
   .controls {
     flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
   }
 
   .btn {
+    font-size: 16px;
+    padding: 14px;
     width: 100%;
-    font-size: 15px;
-    padding: 12px;
   }
 
   #final-score {
-    font-size: 20px;
+    font-size: 24px;
+  }
+
+  header, footer {
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 20px 3px 20px 3px;
   }
 }
 
